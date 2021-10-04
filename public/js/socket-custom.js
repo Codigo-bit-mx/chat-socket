@@ -1,5 +1,4 @@
 var socket = io();
-
 let params = new URLSearchParams(window.location.search);
 
 if( !params.has('nombre') || !params.has('sala')) {
@@ -13,10 +12,9 @@ let usuario = {
 
 socket.on('connect', function() {
     socket.emit('entrarChat', usuario, function(resp) {
-        console.log('Usuarios conectados', resp);
+        renderizarUsuarios(resp);
     });
 });
-
 
 
 // escuchar
@@ -36,11 +34,11 @@ socket.on('disconnect', function() {
 // Escuchar información con on
 socket.on('crearMensaje', function(mensaje) {
     console.log('Servidor:', mensaje);
+    renderizarMensaje(mensaje)
 });
 
-
 socket.on('listaPersonas', function(mensaje) {
-    console.log('si me escuchan:', mensaje);
+    renderizarUsuarios(mensaje);
 });
 
 socket.on('mensajePrivado', function(mensaje) {
